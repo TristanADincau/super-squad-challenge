@@ -1,7 +1,16 @@
 [
   {
-    "name": "a",
-    "email": "a@a.com",
-    "messages": ["a"]
+    "superHeroName": "Spider-Man",
+    "universe": "Marvel",
+    "superPowers": [
+      "spiderwebs, strength, spidy-sense"
+    ]
+  },
+  {
+    "superHeroName": "Captain America",
+    "universe": "Marvel",
+    "superPowers": [
+      "strength, shield, patriotism"
+    ]
   }
 ]

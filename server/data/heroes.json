@@ -1,0 +1,23 @@
+[
+  {
+    "superHeroName": "Superman",
+    "universe": "DC",
+    "superPowers": [
+      "cold breath, heat vision, superstrength, flight"
+    ]
+  },
+  {
+    "superHeroName": "Batman",
+    "universe": "DC",
+    "superPowers": [
+      "money, gadgets, money"
+    ]
+  },
+  {
+    "superHeroName": "Spider-Man",
+    "universe": "Marvel",
+    "superPowers": [
+      "webs, strength, spidy-sense,"
+    ]
+  }
+]

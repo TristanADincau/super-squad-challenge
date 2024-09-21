@@ -3,19 +3,99 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <title>Contact Form</title>
+    <style>
+*{
+  font-family: "Bebas Neue", sans-serif;
+    margin: 4px;
+}
+body {
+  background-color: rgb(239, 54, 54);
+}
+#hero-forms {
+  width: 49%;
+  margin-left: 2em;
+  max-height: 85vh;
+  float: left;
+  color: white;
+};
+#heroes-table {
+  text-align: center;
+  width: 49%;
+  margin: 0;
+  max-height: 85vh;
+  float: right;
+  margin: auto;
+};
+h1{
+  text-align: center;
+}
+#header {
+  background: white;
+  float: center;
+  border-radius: 500px;
+  font-style: areil;
+  color: rgb(239, 54, 54);
+  padding-top: 2px;
+  text-align: center;
+  font-size: 2rem;
+  width: 90vw;
+  height: 14vh;
+  margin: auto;
+}
+#table-header {
+  color: white;
+}
+.hero-form {
+  text-align: center;
+}
+h1 {
+  text-align: center;
+}
+/* chat GPT did this */
+#usersTable {
+  width: 48%;
+  float: right;
+  border-collapse: collapse; /* Optional: for cleaner table borders */
+}
+
+#usersTable th, #usersTable td {
+  color: white;
+  text-align: center; /* Center content in table cells */
+  padding: 10px; /* Add some padding for better spacing */
+  border: 1px solid #ffffff; /* Optional: Add borders to cells */
+}
+/* chat GPT stopped after this */
+
+/* #footer {
+  background: rgb(238, 80, 80);
+  width: 100vw;
+  height: 14vh;
+  margin-left:0;
+  margin-right:0;
+  margin-bottom:0;
+  margin-top: 25em;
+} */
+    </style>
   </head>
   <body>
-    <h1>Contact Form</h1>
-    <form action="/submit-form" method="POST">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required /><br /><br />
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required /><br /><br />
-      <label for="message">Message:</label><br />
+    <div id="header">
+      <h1>Super Hero Manager and Creator</h1>
+    </div>    
+    <div id="hero-forms">
+    <h1> New Superheroes!!</h1>
+    <form action="/submit-form" method="POST" class="hero-form">
+      <label for="superHeroName">Superhero Name:</label>
+      <input type="text" id="superHeroName" name="superHeroName" required /><br /><br />
+      <label for="universe">Universe:</label>
+      <input type="text" id="universe" name="universe" required /><br /><br />
+      <label for="superPowers">Superpowers:</label><br />
       <textarea
-        id="message"
-        name="message"
+        id="superPowers"
+        name="superPowers"
         rows="4"
         cols="50"
         required
@@ -24,47 +104,52 @@
       <input type="submit" value="Submit" />
     </form>
     <h1>User Management</h1>
-    <form id="updateForm">
-      <label for="currentName">Current name:</label>
-      <input type="text" id="currentName" required /><br /><br />
-      <label for="currentEmail">Current email:</label>
-      <input type="email" id="currentEmail" required /><br /><br />
-      <label for="newName">New name:</label>
-      <input type="text" id="newName" required /><br /><br />
-      <label for="newEmail">New email:</label>
-      <input type="email" id="newEmail" required /><br /><br />
-      <button type="submit">Update User</button>
+    <form id="updateForm" class="hero-form">
+      <label for="currentSuperHeroName">Current Superhero Name:</label>
+      <input type="text" id="currentSuperHeroName" required /><br /><br />
+      <label for="currentUniverse">Current universe:</label>
+      <input type="text" id="currentUniverse" required /><br /><br />
+      <label for="newSuperHeroName">New Superhero name:</label>
+      <input type="text" id="newSuperHeroName" required /><br /><br />
+      <label for="newUniverse">New Universe:</label>
+      <input type="text" id="newUniverse" required /><br /><br />
+      <button type="submit">Update Superhero</button>
     </form>
-    <h1>Show Users</h1>
+    </div>
+    <div id="heroes-table">
+    <h1 id="table-header">Show Heroes</h1>
     <table id="usersTable">
       <thead>
         <tr>
-          <th>User Name</th>
-          <th>User Email</th>
+          <th>Superhero</th>
+          <th>Universe</th>
+          <th>Powers</th>
         </tr>
       </thead>
       <tbody id="userTableBody">
         <!-- data of users will be rendered here -->
       </tbody>
     </table>
+    </div>
+    <!-- <div id="footer"></div> -->
     <script>
       document
         .getElementById("updateForm")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
-          const currentName = document.getElementById("currentName").value;
-          const currentEmail = document.getElementById("currentEmail").value;
-          const newName = document.getElementById("newName").value;
-          const newEmail = document.getElementById("newEmail").value;
+          const currentSuperHeroName = document.getElementById("currentSuperHeroName").value;
+          const currentUniverse = document.getElementById("currentUniverse").value;
+          const newSuperHeroName = document.getElementById("newSuperHeroName").value;
+          const newUniverse = document.getElementById("newUniverse").value;
           try {
             const response = await fetch(
-              `/update-user/${currentName}/${currentEmail}`,
+              `/update-user/${currentSuperHeroName}/${currentUniverse}`,
               {
                 method: "PUT",
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ newName, newEmail }),
+                body: JSON.stringify({ newSuperHeroName, newUniverse }),
               }
             );
             const data = await response.json();
@@ -72,7 +157,7 @@
             renderUsers();
             // alert("Message is: " + data.message);
           } catch (error) {
-            alert("Error updating user: " + error.message);
+            alert("Error updating user: " + error.superPowers);
           }
         });
       async function fetchUsers() {
@@ -100,7 +185,7 @@
           const users = await fetchUsers();
           if (Array.isArray(users) && users.length > 0) {
             users.forEach((user) => {
-              const row = `<tr><td>${user.name}</td><td>${user.email}</td></tr>`;
+              const row = `<tr><td>${user.superHeroName}</td><td>${user.universe}</td><td>${user.superPowers}</td></tr>`;
               tableBody.innerHTML += row;
             });
           }

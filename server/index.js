@@ -46,7 +46,7 @@ app.get('/form', (req, res) => {
 // Form submission route
 app.post('/submit-form', async (req, res) => {
     try {
-        const { name, email, message } = req.body;
+        const { superHeroName, universe, superPowers } = req.body;
 
         // Read existing users from file
         let users = [];
@@ -60,11 +60,11 @@ app.post('/submit-form', async (req, res) => {
         }
 
         // Find or create user
-        let user = users.find(u => u.name === name && u.email === email);
+        let user = users.find(u => u.superHeroName === superHeroName && u.universe === universe);
         if (user) {
-            user.messages.push(message);
+            user.messages.push(superPowers);
         } else {
-            user = { name, email, messages: [message] };
+            user = { superHeroName, universe, superPowers: [superPowers] };
             users.push(user);
         }
 
@@ -78,25 +78,25 @@ app.post('/submit-form', async (req, res) => {
 });
 
 // Update user route (currently just logs and sends a response)
-app.put('/update-user/:currentName/:currentEmail', async (req, res) => {
+app.put('/update-user/:currentSuperHeroName/:currentUniverse', async (req, res) => {
     try {
-        const { currentName, currentEmail } = req.params;
-        const { newName, newEmail } = req.body;
-        console.log('Current user:', { currentName, currentEmail });
-        console.log('New user data:', { newName, newEmail });
+        const { currentSuperHeroName, currentUniverse } = req.params;
+        const { newSuperHeroName, newUniverse } = req.body;
+        console.log('Current Superhero:', { currentSuperHeroName, currentUniverse });
+        console.log('New Universe:', { newSuperHeroName, newUniverse });
         const data = await fs.readFile(dataPath, 'utf8');
         if (data) {
             let users = JSON.parse(data);
-            const userIndex = users.findIndex(user => user.name === currentName && user.email === currentEmail);
+            const userIndex = users.findIndex(user => user.superHeroName === currentSuperHeroName && user.universe === currentUniverse);
             console.log(userIndex);
             if (userIndex === -1) {
-                return res.status(404).json({ message: "User not found" })
+                return res.status(404).json({ superPowers: "Superhero not found" })
             }
-            users[userIndex] = { ...users[userIndex], name: newName, email: newEmail };
+            users[userIndex] = { ...users[userIndex], superHeroName: newSuperHeroName, universe: newUniverse };
             console.log(users);
             await fs.writeFile(dataPath, JSON.stringify(users, null, 2));
 
-            res.status(200).json({ message: `You sent ${newName} and ${newEmail}` });
+            res.status(200).json({ superPowers: `You sent ${newSuperHeroName} and ${newUniverse}` });
         }
     } catch (error) {
         console.error('Error updating user:', error);
