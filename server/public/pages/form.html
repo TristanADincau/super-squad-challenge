@@ -29,6 +29,7 @@ body {
   max-height: 85vh;
   float: right;
   margin: auto;
+  color: white;
 };
 h1{
   text-align: center;
@@ -42,7 +43,7 @@ h1{
   padding-top: 2px;
   text-align: center;
   font-size: 2rem;
-  width: 90vw;
+  width: 70vw;
   height: 14vh;
   margin: auto;
 }
@@ -55,14 +56,20 @@ h1{
 h1 {
   text-align: center;
 }
+#delete-heroes {
+  margin: auto;
+  text-align: center;
+  color: white;
+}
 /* chat GPT did this */
-#usersTable {
+#heroesTable {
+  margin: auto;
   width: 48%;
   float: right;
   border-collapse: collapse; /* Optional: for cleaner table borders */
 }
 
-#usersTable th, #usersTable td {
+#heroesTable th, #heroesTable td {
   color: white;
   text-align: center; /* Center content in table cells */
   padding: 10px; /* Add some padding for better spacing */
@@ -87,7 +94,7 @@ h1 {
     </div>    
     <div id="hero-forms">
     <h1> New Superheroes!!</h1>
-    <form action="/submit-form" method="POST" class="hero-form">
+    <form  method="POST" class="hero-form">
       <label for="superHeroName">Superhero Name:</label>
       <input type="text" id="superHeroName" name="superHeroName" required /><br /><br />
       <label for="universe">Universe:</label>
@@ -103,7 +110,7 @@ h1 {
       ><br /><br />
       <input type="submit" value="Submit" />
     </form>
-    <h1>User Management</h1>
+    <h1>Hero Management</h1>
     <form id="updateForm" class="hero-form">
       <label for="currentSuperHeroName">Current Superhero Name:</label>
       <input type="text" id="currentSuperHeroName" required /><br /><br />
@@ -115,10 +122,21 @@ h1 {
       <input type="text" id="newUniverse" required /><br /><br />
       <button type="submit">Update Superhero</button>
     </form>
+
     </div>
     <div id="heroes-table">
+      <div id="delete-heroes">
+      <h2>Delete Hero</h2>
+    <form id="delete-heroes-form">
+      <label for="delete-hero">Hero:</label>
+      <input type="text" id="delete-hero" /><br /><br />
+      <label for="delete-universe">Universe:</label>
+      <input type="text" id="delete-universe" /><br /><br />
+      <button type="submit">Delete Hero</button>
+    </form>
+    </div>
     <h1 id="table-header">Show Heroes</h1>
-    <table id="usersTable">
+    <table id="heroesTable">
       <thead>
         <tr>
           <th>Superhero</th>
@@ -126,7 +144,7 @@ h1 {
           <th>Powers</th>
         </tr>
       </thead>
-      <tbody id="userTableBody">
+      <tbody id="heroTableBody">
         <!-- data of users will be rendered here -->
       </tbody>
     </table>
@@ -143,7 +161,7 @@ h1 {
           const newUniverse = document.getElementById("newUniverse").value;
           try {
             const response = await fetch(
-              `/update-user/${currentSuperHeroName}/${currentUniverse}`,
+              `/update-hero/${currentSuperHeroName}/${currentUniverse}`,
               {
                 method: "PUT",
                 headers: {
@@ -154,44 +172,70 @@ h1 {
             );
             const data = await response.json();
             console.log(data);
-            renderUsers();
+            renderHeroes();
             // alert("Message is: " + data.message);
           } catch (error) {
-            alert("Error updating user: " + error.superPowers);
+            alert("Error updating hero: " + error.superPowers);
           }
         });
-      async function fetchUsers() {
+
+        document
+        .getElementById("delete-heroes-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const superHeroName = document.getElementById("delete-hero").value;
+          const universe = document.getElementById("delete-universe").value;
+          try {
+            const response = await fetch(`/hero/${superHeroName}/${universe}`, {
+              method: "DELETE",
+            });
+            if (!response.ok) {
+              throw new Error("Problem fetching delete endpoint");
+            }
+            const data = await response.text();
+            // console.log(data);
+            renderHeroes();
+          } catch (error) {
+            console.error(
+              "there was a problem, skill issue" +
+                error.message +
+                "GG bro. Keep mogging."
+            );
+          }
+        });
+
+      async function fetchHeroes() {
         try {
-          const response = await fetch("/users");
+          const response = await fetch("/heroes");
           if (!response.ok) {
-            throw new Error("Error fetching users. Response not ok");
+            throw new Error("Error fetching heroes. Response not ok");
           }
           // there could be an error getting response/fetching the endpoint
           console.log(response);
-          const users = await response.json();
+          const heroes = await response.json();
           // there could be an error parsing the response
           // console.log(users);
-          return users;
+          return heroes;
         } catch (error) {
           console.error("There was a problem");
           console.error(error);
         }
       }
 
-      async function renderUsers() {
-        const tableBody = document.getElementById("userTableBody");
+      async function renderHeroes() {
+        const tableBody = document.getElementById("heroTableBody");
         tableBody.innerHTML = "";
         try {
-          const users = await fetchUsers();
-          if (Array.isArray(users) && users.length > 0) {
-            users.forEach((user) => {
-              const row = `<tr><td>${user.superHeroName}</td><td>${user.universe}</td><td>${user.superPowers}</td></tr>`;
+          const heroes = await fetchHeroes();
+          if (Array.isArray(heroes) && heroes.length > 0) {
+            heroes.forEach((hero) => {
+              const row = `<tr><td>${hero.superHeroName}</td><td>${hero.universe}</td><td>${hero.superPowers}</td></tr>`;
               tableBody.innerHTML += row;
             });
           }
         } catch (error) {}
       }
-      document.addEventListener("DOMContentLoaded", renderUsers);
+      document.addEventListener("DOMContentLoaded", renderHeroes);
     </script>
   </body>
 </html>

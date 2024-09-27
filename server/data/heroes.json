@@ -1,12 +1,5 @@
 [
   {
-    "superHeroName": "Superman",
-    "universe": "DC",
-    "superPowers": [
-      "cold breath, heat vision, superstrength, flight"
-    ]
-  },
-  {
     "superHeroName": "Batman",
     "universe": "DC",
     "superPowers": [
@@ -17,7 +10,35 @@
     "superHeroName": "Spider-Man",
     "universe": "Marvel",
     "superPowers": [
-      "webs, strength, spidy-sense,"
+      "spiderwebs, strength, spidy-sense"
+    ]
+  },
+  {
+    "superHeroName": "Captain America",
+    "universe": "Marvel",
+    "superPowers": [
+      "strength, shield, patriotism"
+    ]
+  },
+  {
+    "superHeroName": "Iron Man",
+    "universe": "Marvel",
+    "superPowers": [
+      "Something"
+    ]
+  },
+  {
+    "superHeroName": "j",
+    "universe": "jk",
+    "superPowers": [
+      "hekj"
+    ]
+  },
+  {
+    "superHeroName": "Deadpool",
+    "universe": "Marvel",
+    "superPowers": [
+      "Regen"
     ]
   }
 ]
